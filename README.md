@@ -10,18 +10,19 @@ Reward: $250, 50 places paid. Deadline: Thu 19 Nov 2026, 07:00 WIB
 
 ## Entry
 
-`main.py` (Python 3.13, stdlib only — `base64`, `os`, `sys`) writes the
-front page to `/output/entry.png` (falling back to `./output/entry.png`
-if `/output` does not exist). No network, deterministic: two runs
-produce byte-identical output (sha256
-`71770311045a4340ce2ab37f96e3cec8643bc220b2a6bebe5a403e518299dd7e`).
+`main.py` (Python 3.13, stdlib only — `math`, `os`, `struct`, `sys`,
+`zlib`) *draws* the front page itself, pixel by pixel, and writes it
+to `/output/entry.png`. No network, deterministic: two runs produce
+byte-identical output. A 3x5 bitmap font, a small canvas library
+(rectangles, lines, circles, triangles) and a pure-Python PNG encoder
+do all the rendering; nothing is embedded or copied in.
 
 ## The image
 
-`output/entry.png` — 1024×1024 PNG, 130,300 bytes (limit: 1 MiB).
+`output/entry.png` — 1024×1024 PNG, about 19 KB (limit: 1 MiB).
 Newspaper front page "THE WORLD TODAY", dated **17 November 2026**,
 **No. 17, Page 1**. No other date, no ads, no unrelated images.
-Every story has its own illustration.
+Every story has its own drawn illustration.
 
 Weighted coverage of Tuesday 17 November 2026, researched from
 Reuters / AP / Profile News / Asas Press / PAHO / Dubai Airports:
@@ -53,11 +54,11 @@ Reuters / AP / Profile News / Asas Press / PAHO / Dubai Airports:
 
 ## How the image was built
 
-`src/build_entry.py` renders the page with Pillow + DejaVu fonts
-(build-time only, not part of the graded program). The rendered PNG
-is embedded in `main.py` as base64, so the submitted program needs
-no Pillow, no fonts and no network. Re-run the builder to regenerate
-`output/entry.png`, then re-embed it into `main.py` if the page changes.
+`main.py` renders the page itself at run time: masthead, dateline,
+lead story with a tanker illustration, and eight more stories in a
+two-column grid, each with its own flat vector illustration (bridge,
+summit flags, tents, virus, market chart, courthouse, jets, stage).
+No builder, no Pillow, no fonts and no network are needed.
 
 ## Run
 
